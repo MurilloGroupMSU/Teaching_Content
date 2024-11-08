@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Algebra Visualizations | Murillo Group MSU</title>
+    <style>
+        :root {
+            --msu-green: #18453B;
+            --msu-light-green: #2D6154;
+            --accent: #97A2A2;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .header {
+            background: var(--msu-green);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            margin: 1rem 0 0;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-preview {
+            background: #f5f5f5;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-preview svg {
+            width: 80%;
+            height: 80%;
+            opacity: 0.7;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h2 {
+            margin: 0 0 0.5rem;
+            color: var(--msu-green);
+        }
+
+        .card-content p {
+            margin: 0;
+            color: #666;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .footer {
+            background: #f5f5f5;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Linear Algebra Visualizations</h1>
+        <p>Interactive tools for understanding matrix decompositions and transformations</p>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+            <div class="card">
+                <a href="covariance/">
+                    <div class="card-preview">
+                        <svg viewBox="-120 -120 240 240">
+                            <g transform="rotate(45)">
+                                <ellipse cx="0" cy="0" rx="80" ry="40" 
+                                    fill="none" stroke="#18453B" stroke-width="2" opacity="0.6"/>
+                                {Array.from({length: 20}).map((_, i) => (
+                                    <circle key={i}
+                                        cx={Math.random() * 160 - 80}
+                                        cy={Math.random() * 80 - 40}
+                                        r="3"
+                                        fill="#18453B"
+                                        opacity="0.4"
+                                    />
+                                ))}
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h2>Data Rotation & Covariance</h2>
+                        <p>Visualize how data orientation affects covariance matrix elements</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="eigenvalues/">
+                    <div class="card-preview">
+                        <svg viewBox="-120 -120 240 240">
+                            <line x1="-100" y1="0" x2="100" y2="0" stroke="#18453B" stroke-width="1" opacity="0.3"/>
+                            <line x1="0" y1="-100" x2="0" y2="100" stroke="#18453B" stroke-width="1" opacity="0.3"/>
+                            <!-- Eigenvectors -->
+                            <line x1="0" y1="0" x2="80" y2="40" stroke="#18453B" stroke-width="3" opacity="0.8"/>
+                            <line x1="0" y1="0" x2="-40" y2="80" stroke="#18453B" stroke-width="3" opacity="0.8"/>
+                            <!-- Circular points being stretched -->
+                            <circle cx="80" cy="40" r="4" fill="#18453B" opacity="0.6"/>
+                            <circle cx="-40" cy="80" r="4" fill="#18453B" opacity="0.6"/>
+                            <ellipse cx="0" cy="0" rx="90" ry="45" 
+                                    stroke="#18453B" stroke-width="1" 
+                                    stroke-dasharray="5,5" fill="none" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h2>Eigenvalue Decomposition</h2>
+                        <p>Explore how eigenvectors and eigenvalues describe matrix transformations</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="svd/">
+                    <div class="card-preview">
+                        <svg viewBox="-120 -120 240 240">
+                            <rect x="-90" y="-60" width="50" height="120" 
+                                fill="none" stroke="#18453B" opacity="0.6"/>
+                            <text x="-65" y="0" text-anchor="middle" fill="#18453B">U</text>
+                            
+                            <rect x="-20" y="-60" width="40" height="120" 
+                                fill="none" stroke="#18453B" opacity="0.6"/>
+                            <text x="0" y="0" text-anchor="middle" fill="#18453B">Σ</text>
+                            
+                            <rect x="40" y="-60" width="50" height="120" 
+                                fill="none" stroke="#18453B" opacity="0.6"/>
+                            <text x="65" y="0" text-anchor="middle" fill="#18453B">V<tspan baseline-shift="super" font-size="smaller">T</tspan></text>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h2>Singular Value Decomposition</h2>
+                        <p>Understand the components of SVD and their geometric interpretation</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="pca/">
+                    <div class="card-preview">
+                        <svg viewBox="-120 -120 240 240">
+                            <!-- Scatter plot points -->
+                            {Array.from({length: 30}).map((_, i) => (
+                                <circle key={i}
+                                    cx={Math.random() * 160 - 80}
+                                    cy={Math.random() * 160 - 80}
+                                    r="3"
+                                    fill="#18453B"
+                                    opacity="0.4"
+                                />
+                            ))}
+                            <!-- Principal components -->
+                            <line x1="-90" y1="-45" x2="90" y2="45" 
+                                stroke="#18453B" stroke-width="3" opacity="0.8"/>
+                            <line x1="-45" y1="90" x2="45" y2="-90" 
+                                stroke="#18453B" stroke-width="2" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h2>Principal Component Analysis</h2>
+                        <p>Visualize dimension reduction and variance maximization in PCA</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Created by the Murillo Group at Michigan State University</p>
+    </footer>
+</body>
+</html>
