@@ -181,7 +181,7 @@
         <div class="grid-display">
             <div class="panel">
                 <h3>Original Space</h3>
-                <svg id="originalPlot" width="300" height="300" viewBox="-120 -120 240 240">
+                <svg id="originalPlot" width="300" height="300" viewBox="-120 -120 240 240" style="border: 1px solid #ccc;">
                     <defs>
                         <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
                             <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eee" stroke-width="0.5"/>
@@ -204,7 +204,7 @@
 
             <div class="panel">
                 <h3>Transformed Space</h3>
-                <svg id="transformedPlot" width="300" height="300" viewBox="-120 -120 240 240">
+                <svg id="transformedPlot" width="300" height="300" viewBox="-120 -120 240 240" style="border: 1px solid #ccc;">
                     <defs>
                         <pattern id="grid2" width="20" height="20" patternUnits="userSpaceOnUse">
                             <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#eee" stroke-width="0.5"/>
@@ -260,13 +260,23 @@
         ];
 
         function calculateSVD() {
-            // Create data matrix
-            const X = [];
-            for (let i = 0; i < data[0].length; i++) {
-                X.push([data[0][i], data[1][i]]);
-            }
-            svd = math.svd(X);
-        }
+    console.log('Calculating SVD...');
+    console.log('Initial data:', data);
+    
+    const X = [];
+    for (let i = 0; i < data[0].length; i++) {
+        X.push([data[0][i], data[1][i]]);
+    }
+    console.log('Matrix X:', X);
+    
+    svd = math.svd(X);
+    console.log('SVD result:', svd);
+    
+    // Verify SVD components
+    console.log('U:', svd.U);
+    console.log('S:', svd.S);
+    console.log('V:', svd.V);
+}
 
         function drawPoint(svg, x, y, color = '#18453B', opacity = 0.5) {
             const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
