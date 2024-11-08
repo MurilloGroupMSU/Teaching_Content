@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singular Value Decomposition | MSU</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+    <style>
+        /* Previous styles remain but add: */
+        .step-panel {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .matrix-display {
+            display: inline-block;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+        
+        .operator {
+            font-size: 24px;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Singular Value Decomposition: X = UΣV^T</h1>
+
+        <div class="controls">
+            <div class="slider-container">
+                <button class="button outline" id="prevStep">Previous</button>
+                <button class="button outline" id="nextStep">Next</button>
+                <button class="button" id="generateNew">Generate New Data</button>
+            </div>
+        </div>
+
+        <div class="step-panel">
+            <h3 id="stepDescription">Original Data</h3>
+            <div id="stepEquation" style="font-family: 'Computer Modern', serif; font-size: 1.2em;"></div>
+        </div>
+
+        <div class="grid-display">
+            <!-- Original data view -->
+            <div class="panel">
+                <h3>Data Space</h3>
+                <svg id="dataPlot" width="300" height="300" viewBox="-120 -120 240 240">
+                    <!-- Similar grid setup as before -->
+                </svg>
+            </div>
+
+            <!-- Matrix representation -->
+            <div class="panel">
+                <h3>Matrix Decomposition</h3>
+                <div id="matrixDisplay">
+                    <!-- Will show X = UΣV^T -->
+                </div>
+            </div>
+
+            <!-- Transformed space -->
+            <div class="panel">
+                <h3>Transformed Space</h3>
+                <svg id="transformedPlot" width="300" height="300" viewBox="-120 -120 240 240">
+                    <!-- Similar grid setup -->
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            {
+                id: 'original',
+                description: 'Original Data Matrix X',
+                equation: 'X = [x₁ x₂ ... xₙ]^T'
+            },
+            {
+                id: 'rotation',
+                description: 'Right Singular Vectors (V^T)',
+                equation: 'X = U Σ V^T'
+            },
+            {
+                id: 'scaling',
+                description: 'Singular Values (Σ)',
+                equation: 'Σ = diag(σ₁, σ₂)'
+            },
+            {
+                id: 'coordinates',
+                description: 'Left Singular Vectors (U)',
+                equation: 'U = XV(Σ)⁻¹'
+            }
+        ];
+
+        let currentStep = 0;
+        let data = generateData();
+        let svd = null;
+
+        function updateVisualization() {
+            const step = steps[currentStep];
+            
+            // Update description
+            document.getElementById('stepDescription').textContent = step.description;
+            document.getElementById('stepEquation').textContent = step.equation;
+
+            // Calculate SVD if needed
+            if (!svd) {
+                const X = math.matrix(data);
+                svd = math.svd(X);
+            }
+
+            // Update visualizations based on current step
+            switch(step.id) {
+                case 'original':
+                    drawOriginalData();
+                    break;
+                case 'rotation':
+                    drawRotation();
+                    break;
+                case 'scaling':
+                    drawScaling();
+                    break;
+                case 'coordinates':
+                    drawFinalTransform();
+                    break;
+            }
+        }
+
+        // Implementation of drawing functions...
+        // [We can flesh these out once we agree on the approach]
+
+    </script>
+</body>
+</html>
