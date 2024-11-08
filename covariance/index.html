@@ -109,17 +109,16 @@
                 ];
             };
 
-            const calculateCovariance = (x, y) => {
-                const meanX = x.reduce((a, b) => a + b, 0) / x.length;
-                const meanY = y.reduce((a, b) => a + b, 0) / y.length;
-                const centeredX = x.map(val => val - meanX);
-                const centeredY = y.map(val => val - meanY);
-                const covXX = centeredX.reduce((acc, val, i) => 
-                    acc + val * centeredX[i], 0) / (x.length - 1);
-                const covYY = centeredY.reduce((acc, val, i) => 
-                    acc + val * centeredY[i], 0) / (y.length - 1);
-                const covXY = centeredX.reduce((acc, val, i) => 
-                    acc + val * centeredY[i], 0) / (x.length - 1);
+                  const calculateCovariance = (x, y) => {
+                    const meanX = x.reduce((a, b) => a + b, 0) / x.length;
+                    const meanY = y.reduce((a, b) => a + b, 0) / y.length;
+                    
+                    const centeredX = x.map(val => val - meanX);
+                    const centeredY = y.map(val => val - meanY);
+                    
+                    const covXX = centeredX.reduce((acc, val, i) => acc + val * centeredX[i], 0) / (x.length - 1);
+                    const covYY = centeredY.reduce((acc, val, i) => acc + val * centeredY[i], 0) / (y.length - 1);
+                    const covXY = centeredX.reduce((acc, val, i) => acc + val * centeredY[i], 0) / (x.length - 1);
                 return [[covXX, covXY], [covXY, covYY]];
             };
 
