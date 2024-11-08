@@ -399,4 +399,124 @@
                     transitionProgress = 0;
                     isPlaying = false;
                     if (currentStep < steps.length - 1) {
-                        current
+                        currentStep++;
+                        updateVisualization();
+                    }
+                } else {
+                    // Smooth transition between steps
+                    updateTransitionState(transitionProgress);
+                }
+                requestAnimationFrame(animate);
+            }
+        }
+
+        function updateTransitionState(progress) {
+            const originalPlot = document.getElementById('originalPlot');
+            const transformedPlot = document.getElementById('transformedPlot');
+            ['circle', 'line'].forEach(tag => {
+                originalPlot.querySelectorAll(tag).forEach(el => el.remove());
+                transformedPlot.querySelectorAll(tag).forEach(el => el.remove());
+            });
+
+            if (!svd) calculateSVD();
+
+            switch(currentStep) {
+                case 0:
+                    // Static display of original data
+                    data[0].forEach((x, i) => drawPoint(originalPlot, x, data[1][i]));
+                    break;
+
+                case 1:
+                    // Animate rotation by V^T
+                    const angle = progress * Math.PI / 2;
+                    const rotationMatrix = [
+                        [Math.cos(angle), -Math.sin(angle)],
+                        [Math.sin(angle), Math.cos(angle)]
+                    ];
+                    
+                    // Draw faded original data
+                    data[0].forEach((x, i) => drawPoint(originalPlot, x, data[1][i], '#999', 0.2));
+                    
+                    // Draw rotating data
+                    const rotatingData = data[0].map((x, i) => {
+                        const point = [x, data[1][i]];
+                        const rotated = math.multiply(point, rotationMatrix);
+                        return rotated;
+                    });
+                    
+                    rotatingData.forEach(point => drawPoint(transformedPlot, point[0], point[1]));
+                    
+                    // Draw rotating principal directions
+                    const v1 = math.multiply([svd.V[0][0], svd.V[1][0]], rotationMatrix);
+                    const v2 = math.multiply([svd.V[0][1], svd.V[1][1]], rotationMatrix);
+                    drawVector(transformedPlot, v1, '#e63946');
+                    drawVector(transformedPlot, v2, '#457b9d');
+                    break;
+
+                case 2:
+                    // Animate scaling by Σ
+                    const scale1 = 1 + (svd.S[0] - 1) * progress;
+                    const scale2 = 1 + (svd.S[1] - 1) * progress;
+                    
+                    const rotated = math.multiply(data[0].map((x, i) => [x, data[1][i]]), svd.V);
+                    rotated.forEach(point => drawPoint(transformedPlot, point[0], point[1], '#999', 0.2));
+                    
+                    const scaledData = rotated.map(point => [
+                        point[0] * scale1,
+                        point[1] * scale2
+                    ]);
+                    
+                    scaledData.forEach(point => drawPoint(transformedPlot, point[0], point[1]));
+                    break;
+
+                case 3:
+                    // Show final transformation
+                    const final = math.multiply(data[0].map((x, i) => [x, data[1][i]]), svd.V);
+                    final.forEach(point => {
+                        const scaled = [point[0] * svd.S[0], point[1] * svd.S[1]];
+                        drawPoint(transformedPlot, scaled[0], scaled[1]);
+                    });
+                    break;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('prevStep').addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                transitionProgress = 0;
+                updateVisualization();
+            }
+        });
+
+        document.getElementById('nextStep').addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                transitionProgress = 0;
+                updateVisualization();
+            }
+        });
+
+        document.getElementById('generateNew').addEventListener('click', () => {
+            data = generateData();
+            svd = null;
+            currentStep = 0;
+            transitionProgress = 0;
+            updateVisualization();
+        });
+
+        document.getElementById('playPause').addEventListener('click', () => {
+            const button = document.getElementById('playPause');
+            isPlaying = !isPlaying;
+            button.textContent = isPlaying ? 'Pause Animation' : 'Play Animation';
+            if (isPlaying) {
+                transitionProgress = 0;
+                animate();
+            }
+        });
+
+        // Initialize visualization
+        updateVisualization();
+    </script>
+</body>
+</html>
