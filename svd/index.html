@@ -5,19 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Singular Value Decomposition | MSU</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
-
-
-    console.log('Math.js version:', math ? math.version : 'not loaded');
-
-    // Test basic SVD functionality
-    try {
-        const testMatrix = [[1, 2], [3, 4]];
-        const testSVD = math.svd(testMatrix);
-        console.log('Test SVD works:', testSVD);
-    } catch (error) {
-        console.error('SVD test failed:', error);
-    }
-    
     <style>
         :root {
             --msu-green: #18453B;
@@ -232,6 +219,17 @@
     </div>
     <circle cx="0" cy="0" r="5" fill="red"/>
     <script>
+                // Test math.js loading
+        console.log('Math.js version:', math ? math.version : 'not loaded');
+
+        // Test SVD functionality
+        try {
+            const testMatrix = [[1, 2], [3, 4]];
+            const testSVD = math.svd(testMatrix);
+            console.log('Test SVD works:', testSVD);
+        } catch (error) {
+            console.error('SVD test failed:', error);
+        }
         let currentStep = 0;
         let isPlaying = false;
         let animationId;
